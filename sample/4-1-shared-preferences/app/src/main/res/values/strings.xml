@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Android Shared Preferences</string>
+    <string name="title_activity_saved_values">SavedValuesActivity</string>
+    <string name="shared_preferences_key">4903053c1d116fdd52bfdc79f325030f</string>
+    <string name="message_key">MESSAGE_KEY</string>
+    <string name="number_key">NUMBER_KEY</string>
+</resources>

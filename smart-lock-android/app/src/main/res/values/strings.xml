@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Smart Lock</string>
+    <string name="str_login_hint_password">Login Password</string>
+    <string name="str_login_btn_login_text">Login</string>
+
+    <string name="str_control_btn_log_text">Log</string>
+    <string name="str_control_btn_update_password_text">Change Password</string>
+    <string name="str_control_btn_update_pin_text">Change PIN</string>
+
+    <string name="str_cpw_edt_current_password_text">Current Password</string>
+    <string name="str_cpw_edt_new_password_text">New Password</string>
+    <string name="str_cpw_edt_reenter_new_password_text">Re-enter New Password</string>
+    <string name="str_cpw_btn_change_password">Change Password</string>
+
+    <string name="str_cpi_edt_current_password_text">Current PIN</string>
+    <string name="str_cpi_edt_new_password_text">New PIN</string>
+    <string name="str_cpi_edt_reenter_new_password_text">Re-enter New PIN</string>
+    <string name="str_cpi_btn_change_password">Change PIN</string>
+</resources>

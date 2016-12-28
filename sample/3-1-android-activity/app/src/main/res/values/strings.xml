@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Fragments Sample</string>
+    <string name="activity_login_title">Lock</string>
+    <string name="activity_login_btn_login_text">Login</string>
+</resources>
