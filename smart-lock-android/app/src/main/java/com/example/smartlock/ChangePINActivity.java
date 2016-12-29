@@ -1,5 +1,6 @@
 package com.example.smartlock;
 
+import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class ChangePINActivity extends AppCompatActivity {
 
@@ -14,6 +21,8 @@ public class ChangePINActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initLayoutAndControl();
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
     }
 
     void initLayoutAndControl()
@@ -41,7 +50,26 @@ public class ChangePINActivity extends AppCompatActivity {
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+
+                try {
+                    URL url = new URL("https://fb-sample-b312e.firebaseio.com/system.json");
+                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                    StringBuffer fileContent = new StringBuffer("");
+                    int read_bytes = 0;
+
+                    byte[] buffer = new byte[1024];
+                    while ((read_bytes = inputStream.read(buffer)) != -1)
+                    {
+                        fileContent.append(new String(buffer, 0, read_bytes));
+                    }
+
+                    Toast.makeText(ChangePINActivity.this, fileContent.toString(), Toast.LENGTH_SHORT).show();
+                } catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
             }
         });
         mainLayout.addView(btnChangePassword);
