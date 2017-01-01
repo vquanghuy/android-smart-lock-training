@@ -6,6 +6,7 @@
     <string name="str_control_btn_log_text">Log</string>
     <string name="str_control_btn_update_password_text">Change Password</string>
     <string name="str_control_btn_update_pin_text">Change PIN</string>
+    <string name="str_control_btn_simulate_open_door_text">Simulate Open Door Event</string>
 
     <string name="str_cpw_edt_current_password_text">Current Password</string>
     <string name="str_cpw_edt_new_password_text">New Password</string>

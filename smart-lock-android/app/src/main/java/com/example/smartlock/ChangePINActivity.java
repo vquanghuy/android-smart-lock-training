@@ -3,6 +3,7 @@ package com.example.smartlock;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,10 +13,15 @@ import android.widget.Toast;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Random;
 
 public class ChangePINActivity extends AppCompatActivity {
+
+    private static final String TAG = "ChangePINActivity";
+    Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +43,7 @@ public class ChangePINActivity extends AppCompatActivity {
         edtCurrentPassword.setHint(getString(R.string.str_cpi_edt_current_password_text));
         mainLayout.addView(edtCurrentPassword);
 
-        EditText edtNewPassword = new EditText(this);
+        final EditText edtNewPassword = new EditText(this);
         edtNewPassword.setHint(getString(R.string.str_cpi_edt_new_password_text));
         mainLayout.addView(edtNewPassword);
 
@@ -48,28 +54,23 @@ public class ChangePINActivity extends AppCompatActivity {
         Button btnChangePassword = new Button(this);
         btnChangePassword.setText(getString(R.string.str_cpi_btn_change_password));
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
 
-                try {
-                    URL url = new URL("https://fb-sample-b312e.firebaseio.com/system.json");
-                    HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-
-                    InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-                    StringBuffer fileContent = new StringBuffer("");
-                    int read_bytes = 0;
-
-                    byte[] buffer = new byte[1024];
-                    while ((read_bytes = inputStream.read(buffer)) != -1)
+                try
+                {
+                    int returnCode = FirebaseHelper.setDoorPIN(String.valueOf(1000 + random.nextInt(9000)));
+                    if (returnCode != 200)
                     {
-                        fileContent.append(new String(buffer, 0, read_bytes));
+                        Toast.makeText(ChangePINActivity.this, "Unexpected Error !", Toast.LENGTH_SHORT).show();
                     }
-
-                    Toast.makeText(ChangePINActivity.this, fileContent.toString(), Toast.LENGTH_SHORT).show();
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     ex.printStackTrace();
                 }
+                
             }
         });
         mainLayout.addView(btnChangePassword);

@@ -8,7 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import org.json.JSONObject;
+
+import java.util.Random;
+import java.util.concurrent.Exchanger;
+
 public class MainControlActivity extends AppCompatActivity {
+    Random random = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,5 +62,23 @@ public class MainControlActivity extends AppCompatActivity {
             }
         });
         mainLayout.addView(btnUpdatePIN);
+
+        Button btnSimulateOpenDoor = new Button(this);
+        btnSimulateOpenDoor.setText(getString(R.string.str_control_btn_simulate_open_door_text));
+        btnSimulateOpenDoor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try
+                {
+                    FirebaseHelper.simulateDoorOpen();
+                }
+                catch (Exception ex)
+                {
+                    ex.printStackTrace();
+                }
+
+            }
+        });
+        mainLayout.addView(btnSimulateOpenDoor);
     }
 }
