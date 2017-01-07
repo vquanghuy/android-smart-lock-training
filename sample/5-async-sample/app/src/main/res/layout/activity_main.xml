@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.asyncsample.MainActivity">
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/edtCountValue"
+        android:text="10" />
+
+    <Button
+        android:text="Async"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edtCountValue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:id="@+id/btnAsyncCounting" />
+
+    <TextView
+        android:text="0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnThreadHandlerCounting"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="95dp"
+        android:id="@+id/txtCount"
+        android:textSize="56sp"
+        android:textStyle="normal|bold" />
+
+    <Button
+        android:text="Thread + RunonUI"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/btnThreadRunUiCounting"
+        android:layout_below="@+id/btnAsyncCounting"
+        android:layout_alignLeft="@+id/btnAsyncCounting"
+        android:layout_alignStart="@+id/btnAsyncCounting" />
+
+    <Button
+        android:text="Thread + Handler"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/btnThreadHandlerCounting"
+        android:layout_below="@+id/btnThreadRunUiCounting"
+        android:layout_alignLeft="@+id/btnThreadRunUiCounting"
+        android:layout_alignStart="@+id/btnThreadRunUiCounting" />
+</RelativeLayout>
