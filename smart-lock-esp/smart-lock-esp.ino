@@ -1,9 +1,13 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 #include <Keypad.h>
+#include <FirebaseArduino.h>
 
 #define WIFI_SSID "SSID"
 #define WIFI_PASSWORD "stdio_vn"
+
+#define FIREBASE_HOST "smart-lock-70150.firebaseio.com"
+#define FIREBASE_AUTH ""
 
 const int NTP_PACKET_SIZE = 48;
 byte packetBuffer[NTP_PACKET_SIZE];
@@ -13,7 +17,7 @@ WiFiUDP udp;
 //Set for matrix key 4x4
 #define ROWS 4
 #define COLUMNS 4
-#define LED_PIN 16
+
 char keys[ROWS][COLUMNS] = {
                               {'1', '2', '3', 'A'},
                               {'4', '5', '6', 'B'},
@@ -42,6 +46,9 @@ void setup() {
   Serial.println(WiFi.localIP());
 
   syncGlobalTime();
+
+  // Init Firebase
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
 }
 
 void loop() {
@@ -63,7 +70,12 @@ void loop() {
     {
       Serial.println("End input");
       Serial.println(inputPin);
-      // TODO: check is pin correct
+      
+      String doorPin = Firebase.getString("system/door_pin");
+      Serial.println("-----");
+      Serial.println(inputPin);
+      Serial.println(doorPin);
+      Serial.println("-----");
       pinInputing = false;
     }
   }
