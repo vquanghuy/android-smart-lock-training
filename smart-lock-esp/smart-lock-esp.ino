@@ -1,5 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
+#include <Keypad.h>
 
 #define WIFI_SSID "SSID"
 #define WIFI_PASSWORD "stdio_vn"
@@ -8,6 +9,23 @@ const int NTP_PACKET_SIZE = 48;
 byte packetBuffer[NTP_PACKET_SIZE];
 unsigned long unixTimestamp = 0;
 WiFiUDP udp;
+
+//Set for matrix key 4x4
+#define ROWS 4
+#define COLUMNS 4
+#define LED_PIN 16
+char keys[ROWS][COLUMNS] = {
+                              {'1', '2', '3', 'A'},
+                              {'4', '5', '6', 'B'},
+                              {'7', '8', '9', 'C'},
+                              {'*', '0', '#', 'D'},
+                           };
+byte rowPins[ROWS] = {5, 4, 0, 2}; 
+byte columnPins[COLUMNS] = {14, 12, 13, 15};
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, columnPins, ROWS, COLUMNS);
+
+bool pinInputing = false;
+String inputPin = "";
 
 void setup() {
   Serial.begin(9600);
@@ -27,7 +45,28 @@ void setup() {
 }
 
 void loop() {
-
+  char temp = keypad.getKey();
+  if ((int)keypad.getState() ==  PRESSED) 
+  {
+    if (temp == '*')
+    {
+      Serial.println("Begin input");
+      pinInputing = true;
+      inputPin = "";
+    }
+    else if (pinInputing && temp >= '0' && temp <= '9')
+    { 
+      inputPin += temp;
+      Serial.println(inputPin);
+    }
+    else if (pinInputing && temp == '#')
+    {
+      Serial.println("End input");
+      Serial.println(inputPin);
+      // TODO: check is pin correct
+      pinInputing = false;
+    }
+  }
 }
 
 void syncGlobalTime()
