@@ -76,6 +76,23 @@ void loop() {
       Serial.println(inputPin);
       Serial.println(doorPin);
       Serial.println("-----");
+
+      StaticJsonBuffer<256> jsonBuffer;
+      JsonObject& data = jsonBuffer.createObject();
+
+      String message = "Door open: ";
+      if (doorPin == pin)
+      {
+        Serial.println("CORRECT");
+        data["status"] = "success";      
+      }
+      else
+      {
+        Serial.println("INCORRECT");
+        data["status"] = "failure";
+      }
+      data["timestamp"] = (String) (unixTimestamp + millis() / 1000);
+      Firebase.push("system/tracking", data);
       pinInputing = false;
     }
   }
