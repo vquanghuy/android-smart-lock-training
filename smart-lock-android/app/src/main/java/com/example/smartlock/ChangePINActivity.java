@@ -27,8 +27,6 @@ public class ChangePINActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initLayoutAndControl();
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
     }
 
     void initLayoutAndControl()
@@ -60,11 +58,17 @@ public class ChangePINActivity extends AppCompatActivity {
 
                 try
                 {
-                    int returnCode = FirebaseHelper.setDoorPIN(String.valueOf(1000 + random.nextInt(9000)));
-                    if (returnCode != 200)
-                    {
-                        Toast.makeText(ChangePINActivity.this, "Unexpected Error !", Toast.LENGTH_SHORT).show();
-                    }
+                    FirebaseHelper.setDoorPIN(String.valueOf(1000 + random.nextInt(9000)),
+                            new FirebaseHelper.Listener()
+                            {
+                                @Override
+                                public void onFinish(Object result) {
+                                    if (((Integer) result) != 200)
+                                    {
+                                        Toast.makeText(ChangePINActivity.this, "Unexpected Error !", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                 }
                 catch (Exception ex)
                 {

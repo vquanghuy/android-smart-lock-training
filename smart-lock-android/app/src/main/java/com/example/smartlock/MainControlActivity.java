@@ -1,5 +1,6 @@
 package com.example.smartlock;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -15,11 +17,14 @@ import java.util.concurrent.Exchanger;
 
 public class MainControlActivity extends AppCompatActivity {
     Random random = null;
+    ProgressDialog progressDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initLayoutAndControl();
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage(getString(R.string.str_dlg_loading));
     }
 
     void initLayoutAndControl()
@@ -70,7 +75,17 @@ public class MainControlActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try
                 {
-                    FirebaseHelper.simulateDoorOpen();
+                    progressDialog.show();
+                    FirebaseHelper.simulateDoorOpen(new FirebaseHelper.Listener() {
+                        @Override
+                        public void onFinish(Object result) {
+                            if (((Integer) result) != 200)
+                            {
+                                Toast.makeText(MainControlActivity.this, "Unexpected Error !", Toast.LENGTH_SHORT).show();
+                            }
+                            progressDialog.dismiss();
+                        }
+                    });
                 }
                 catch (Exception ex)
                 {

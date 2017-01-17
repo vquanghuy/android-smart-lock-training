@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "821978547814",
+    "firebase_url": "https://fb-sample-b312e.firebaseio.com",
+    "project_id": "fb-sample-b312e",
+    "storage_bucket": "fb-sample-b312e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821978547814:android:a380730986ebaa3f",
+        "android_client_info": {
+          "package_name": "com.example.smartlock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "821978547814-ueaquvpuqe0aml7ck4nf0vu5etupbrks.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.smartlock",
+            "certificate_hash": "8E14880F61BC7AC69333AAD82E3CBEB3FB1F75AF"
+          }
+        },
+        {
+          "client_id": "821978547814-14cp02v1utg6a2aptqgham185tqinram.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCM_VCHjSZiAMAKClqx6qg4pYy4B4QqkJM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "821978547814-14cp02v1utg6a2aptqgham185tqinram.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
