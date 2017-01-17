@@ -127,6 +127,11 @@ public class FirebaseHelper {
         new SetDataTask(callback).execute(FB_DOOR_PIN, "PUT", pin);
     }
 
+    public static void getLog(Listener callback)
+    {
+        new GetDataTask(callback).execute(FB_TRACKING);
+    }
+
     public static void simulateDoorOpen(Listener callback) throws Exception
     {
         String status = random.nextBoolean() ? "SUCCESS" : "FAILURE";

@@ -55,25 +55,23 @@ public class ChangePINActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-
-                try
-                {
-                    FirebaseHelper.setDoorPIN(String.valueOf(1000 + random.nextInt(9000)),
-                            new FirebaseHelper.Listener()
+            try {
+                FirebaseHelper.setDoorPIN(edtNewPassword.getText().toString(),
+                    new FirebaseHelper.Listener()
+                    {
+                        @Override
+                        public void onFinish(Object result) {
+                            if (((Integer) result) != 200)
                             {
-                                @Override
-                                public void onFinish(Object result) {
-                                    if (((Integer) result) != 200)
-                                    {
-                                        Toast.makeText(ChangePINActivity.this, "Unexpected Error !", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                }
-                catch (Exception ex)
-                {
-                    ex.printStackTrace();
-                }
+                                Toast.makeText(ChangePINActivity.this, "Unexpected Error !", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+            }
                 
             }
         });
