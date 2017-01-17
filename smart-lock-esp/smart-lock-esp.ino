@@ -1,5 +1,6 @@
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
+#include <WiFiClient.h>
 #include <Keypad.h>
 #include <FirebaseArduino.h>
 
@@ -9,10 +10,15 @@
 #define FIREBASE_HOST "smart-lock-70150.firebaseio.com"
 #define FIREBASE_AUTH ""
 
+#define DEVICE_UNIQUE_ID "eoBEboSRFfU:APA91bEueuJj58k1SmRMJ3JPC0SW059wfNBPMo55e8nFViIVVWCmgzoov1zgJZi4E9Qt6oe_rvCU1QebLCZv3bYBU1XnTSEcxIVIP43eWYsNEtLxpaTF4wolJtvp11Qn5rjsz7H-0l6r"
+#define FCM_KEY "AAAAFcYf74U:APA91bGOgaiDjXR5iAc-YdSDu3-4jMfY5WClIhG5V7BoDoL2CQZ4dqTxU399FNRQBJRB9zi0kFzmDGGeGp4nQxjroKTdr_Pju7bzDPXi0cRrmvwt2hbAovrf48x_0cY_5lgrACDEKa6jFRF7bBc9Kx6Ot-we1pA_ew"
+#define FCM_SERVER "fcm.googleapis.com"
+
 const int NTP_PACKET_SIZE = 48;
 byte packetBuffer[NTP_PACKET_SIZE];
 unsigned long unixTimestamp = 0;
 WiFiUDP udp;
+WiFiClient client;
 
 //Set for matrix key 4x4
 #define ROWS 4
@@ -81,7 +87,7 @@ void loop() {
       JsonObject& data = jsonBuffer.createObject();
 
       String message = "Door open: ";
-      if (doorPin == pin)
+      if (doorPin == inputPin)
       {
         Serial.println("CORRECT");
         data["status"] = "success";      
@@ -93,6 +99,7 @@ void loop() {
       }
       data["timestamp"] = (String) (unixTimestamp + millis() / 1000);
       Firebase.push("system/tracking", data);
+      sendPushNotification(data["timestamp"]);
       pinInputing = false;
     }
   }
@@ -190,3 +197,32 @@ unsigned long sendNTPpacket(IPAddress& address)
   udp.endPacket();
 }
 
+void sendPushNotification(const String& message) {
+  String data = "{" ;
+  data = data + "\"to\": \"" + DEVICE_UNIQUE_ID + "\"," ;
+  data = data + "\"notification\": {" ;
+  data = data + "\"body\": \"" + message + "\"," ;
+  data = data + "\"title\" : \"Alarm\" " ;
+  data = data + "} }" ;
+
+  Serial.println("Send data...");
+  if (client.connect(FCM_SERVER, 80)) {
+    Serial.println("Connected to the server..");
+    client.println("POST /fcm/send HTTP/1.1");
+    client.println(((String)"Authorization: key=") + FCM_KEY);
+    client.println("Content-Type: application/json");
+    client.println("Host: fcm.googleapis.com");
+    client.print("Content-Length: ");
+    client.println(data.length());
+    client.print("\n");
+    client.print(data);
+  }
+  Serial.println("Data sent...Reading response..");
+  while (client.available()) {
+   char c = client.read();
+   Serial.print(c);
+  }
+  Serial.println("Finished!");
+  client.flush();
+  client.stop();
+}
